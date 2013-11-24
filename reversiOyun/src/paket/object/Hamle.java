@@ -1,11 +1,13 @@
 package paket.object;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Hamle {
 	
        Tahta oynanmisDurum;
        Tahta oynanacakDurum;
        Tas oynanacakTas;
-       Renk renk;
        
        public Hamle(Tas oynanacakTas,Tahta oynanacakDurum){
     	   
@@ -15,58 +17,68 @@ public class Hamle {
        }
        
        public void oyna(){
-    	   //bu metotta mevcut tahtaya yapılan hamle sonucunda tahtanın geçeceği durumu gösterir
-    	   for(int i=0;i<kacBirimGidilecek(oynanacakTas.getXkordinat(), oynanacakTas.getYkordinat(), Yon.solUstCapraz);i++){
-    		   
-    	   }
-    			
+    	   solCaprazOyna();
+    	   sagCaprazOyna();
+    	   dikOyna();
+    	   yatayOyna();
        }
        
-       public void solUstCaprazGit(int x,int y,int gidilecekBirim,int maksimumBirim){
-    	   int adim=1;
-    	   if(adim<=maksimumBirim){
-	    		   //gideceği yöndeki ilk taş karşı renkte olacak
-	    		   if(adim==1&&
-	    			  oynanacakDurum.getElement(x-adim, y-adim).getRenk()!=Renk.bos&&
-	    			  oynanacakDurum.getElement(x-adim, y-adim).getRenk()!=oynanacakTas.getRenk()){
-	    			   adim+=1;
-	    			solUstCaprazGit(x, y, adim, maksimumBirim);   
-	    		   }else{
-	    			   //ilk adımı atamadı ve patladı
-	    			   adim=-1;
-	    		   }
-    	   }
-       }
-       
-       public int kacBirimGidilecek(int x,int y,int yon){
-    	   
-    	   int sonuc=0;
-    	   if(yon==Yon.solUstCapraz){
-    		   if(x<y)
-    			   sonuc=x;
-    		       sonuc=y;
-    	   }else if(yon==Yon.solAltCapraz){
-    		   if(x<7-y)
-    			   sonuc=x;
-    		       sonuc=7-y;
-    	   }else if(yon==Yon.ust){
-    		   		sonuc=y;
-    	   }else if(yon==Yon.alt){
-    		   sonuc=7-y;
-    	   }else if(yon==Yon.sag){
-    		   sonuc=7-x;
-    	   }else if(yon==Yon.sol){
-    		   sonuc=x;
-    	   }else if(yon==Yon.sagAltCapraz){
-    		   if(7-y<7-x)
-    			   sonuc=7-y;
-    		       sonuc=7-x;
-    	   }else if(yon==Yon.sagUstCapraz){
-    		   if(y<7-x)
-    			   sonuc=y;
-    		       sonuc=7-x;
-    	   }
-    	   return sonuc;
-    	   
-       }
+      public void solCaprazOyna(){
+    	  Tas solCaprazHat[];
+    	  /*hat üzerindeki diğer renk grubunu içine alan ilk ve son taşın yerini tutar
+    	    örnek: X X 0 0 0 X X X
+    	    geziciİlk 1, geziciSon da 5. eleman oluyor */ 
+    	  Map<Integer,Integer> geziciİlk=new HashMap<>(),geziciSon=new HashMap<>();
+    	  //oynanacak taşı oynadık
+    	  oynanacakDurum.setElement(oynanacakTas.getXkordinat(), oynanacakTas.getYkordinat(), oynanacakTas.getRenk());
+    	  
+    	  if(oynanacakTas.getXkordinat()<oynanacakTas.getYkordinat()){
+    		  solCaprazHat=new Tas[8-Math.abs(oynanacakTas.getXkordinat()-oynanacakTas.getYkordinat())];
+    		  for(int i=0;i<solCaprazHat.length;i++){
+    			  solCaprazHat[i]=oynanacakDurum.getElement(i, oynanacakTas.getYkordinat()-oynanacakTas.getXkordinat());
+    		  }
+    		  //şimdi hattımızı inceleyip değişiklikleri yapacağız.
+    		  for(int j=0;j<solCaprazHat.length;j++){
+    			 if(solCaprazHat[j].getRenk()==Sabitler.BOS){
+    				 
+    			 }else if(solCaprazHat[j].getRenk()!=Sabitler.BOS&&geziciİlk.size()==0){
+    				 geziciİlk.put(j, solCaprazHat[j].getRenk());
+    			 }else if(solCaprazHat[j].getRenk()!=Sabitler.BOS&&
+    					 geziciİlk.size()>0&&solCaprazHat[j].getRenk()==geziciİlk.get(j-1)){
+    				 geziciİlk.remove(j-1);
+    				 geziciİlk.put(j, solCaprazHat[j].getRenk());
+    			 }else if(solCaprazHat[j].getRenk()!=Sabitler.BOS&&
+    					 geziciİlk.size()>0&&solCaprazHat[j].getRenk()!=geziciİlk.get(j-1)&&geziciSon.size()==0){
+    				 geziciSon.put(j, solCaprazHat[j].getRenk());
+    			 }else if(solCaprazHat[j].getRenk()!=Sabitler.BOS&&
+    					 geziciSon.size()>0&&solCaprazHat[j].getRenk()!=geziciSon.get(j-1)){
+    				    geziciSon.remove(j-1);
+    				    geziciSon.put(j, solCaprazHat[j].getRenk());
+    			 }
+    		  }
+    	  }else if(oynanacakTas.getXkordinat()>oynanacakTas.getYkordinat()){
+    		  solCaprazHat=new Tas[8-Math.abs(oynanacakTas.getXkordinat()-oynanacakTas.getYkordinat())];
+    		  for(int i=0;i<solCaprazHat.length;i++){
+    			  solCaprazHat[i]=oynanacakDurum.getElement(oynanacakTas.getXkordinat()-oynanacakTas.getYkordinat(),i);
+    		  }
+    	  }else{
+    		  solCaprazHat=new Tas[8];
+    		  for(int i=0;i<solCaprazHat.length;i++){
+    			  solCaprazHat[i]=oynanacakDurum.getElement(i,i);
+    		  }
+    	  }
+    	  //şimdi elimizdeki hattı güncelleyip inceleyeceğiz.
+    	  
+      }
+      
+      public void sagCaprazOyna(){
+    	  
+      }
+      public void dikOyna(){
+    	  
+      }
+      public void yatayOyna(){
+    	  
+      }
+      
 }
