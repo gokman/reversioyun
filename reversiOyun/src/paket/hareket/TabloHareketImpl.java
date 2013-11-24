@@ -2,8 +2,7 @@ package paket.hareket;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import paket.object.Renk;
+import paket.object.Sabitler;
 import paket.object.Tahta;
 import paket.object.Tas;
 
@@ -14,7 +13,7 @@ public class TabloHareketImpl implements TahtaHareket{
 		int miktar=0;
 		for(int x=0;x<8;x++){
 			for(int y=0;y<8;y++){
-				if(tahta.getElement(x, y).getRenk()==Renk.beyaz)
+				if(tahta.getElement(x, y).getRenk()==Sabitler.BEYAZ)
 					miktar+=1;
 			}
 		}
@@ -26,7 +25,7 @@ public class TabloHareketImpl implements TahtaHareket{
 		int miktar=0;
 		for(int x=0;x<8;x++){
 			for(int y=0;y<8;y++){
-				if(tahta.getElement(x, y).getRenk()==Renk.siyah)
+				if(tahta.getElement(x, y).getRenk()==Sabitler.SIYAH)
 					miktar+=1;
 			}
 		}
@@ -51,7 +50,7 @@ public class TabloHareketImpl implements TahtaHareket{
 		for(int x=0;x<8;x++){
 			for(int y=0;y<8;y++){
 				//taş yok ise potansiyel bir oynanacak taştır bu
-				if(tahta.getElement(x, y).getRenk()==Renk.bos){
+				if(tahta.getElement(x, y).getRenk()==Sabitler.BOS){
 					//saat yönünde tüm yönlere bakacağız
 					//baktığımız yönde eleman var ise ve siyah veya beyaz taş var ise o zaman taş koyulabilir
 					if(!tahta.getElement(x-1, y-1).equals(null)&&

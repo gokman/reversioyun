@@ -1,8 +1,6 @@
 package paket.hareket;
 
 import java.util.List;
-
-import paket.object.Renk;
 import paket.object.Tahta;
 import paket.object.Tas;
 
