@@ -50,9 +50,13 @@ public class Main {
 		System.out.println("\n");
 		System.out.println(geziciSon);*/
 		
-		Hamle hamle=new Hamle();
-		hamle.solCaprazOyna();
-		
+		//Hamle hamle=new Hamle();
+		//hamle.solCaprazOyna();
+		int a=4;
+		while(a!=0){
+			System.out.println(a);
+			a=a-1;
+		}
 	}
 
 }
