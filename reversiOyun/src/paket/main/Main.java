@@ -14,15 +14,16 @@ import paket.object.Tas;
 
 public class Main {
 	
+	
 	public static void main(String args[]){
 		
 		/*Tas solCaprazHat[]=new Tas[7];
         solCaprazHat[0]=new Tas(1,1,Sabitler.SIYAH);
-        solCaprazHat[1]=new Tas(1,1,Sabitler.BEYAZ);
-        solCaprazHat[2]=new Tas(1,1,Sabitler.BEYAZ);
+        solCaprazHat[1]=new Tas(1,1,Sabitler.SIYAH);
+        solCaprazHat[2]=new Tas(1,1,Sabitler.SIYAH);
         solCaprazHat[3]=new Tas(1,1,Sabitler.SIYAH);
         solCaprazHat[4]=new Tas(1,1,Sabitler.SIYAH);
-        solCaprazHat[5]=new Tas(1,1,Sabitler.SIYAH);
+        solCaprazHat[5]=new Tas(1,1,Sabitler.BEYAZ);
         solCaprazHat[6]=new Tas(1,1,Sabitler.SIYAH);
 		Map<Integer,Integer> geziciİlk=new HashMap<Integer,Integer>(),geziciSon=new HashMap<>();
 		
