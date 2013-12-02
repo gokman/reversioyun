@@ -45,7 +45,7 @@ public class Main {
     public static void main(String[] args) {
 
         final String baseAddress = "http://localhost:8080/reversi-stadium/rest/";
-        final String authCode    = "hrrv6675";
+        final String authCode    = "ovxj5996";
         final int    player      = Sabitler.SIYAH_OYUNCU;
         Sabitler.MEVCUT_OYUNCU=player;
         new Main(baseAddress, authCode, player);
