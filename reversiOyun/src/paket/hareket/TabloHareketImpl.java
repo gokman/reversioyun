@@ -1,8 +1,9 @@
 package paket.hareket;
 
 import java.util.ArrayList;
+
 import java.util.List;
-import paket.object.Sabitler;
+import paket.util.Sabitler;
 import paket.object.Tahta;
 import paket.object.Tas;
 

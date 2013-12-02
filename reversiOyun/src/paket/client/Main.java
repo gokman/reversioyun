@@ -103,14 +103,14 @@ public class Main {
                 }
                 //hamlelerden en iyi olanı seçeceğiz
                 Hakem hakem=new Hakem();
-                //Hamle enIyiHamle=hakem.enCokTasliHamle(hamleler, Sabitler.MEVCUT_OYUNCU);
-                Hamle enGuzelHamle=hakem.guzelHamleOyna(hamleler, Sabitler.MEVCUT_OYUNCU);
+                Hamle enIyiHamle=hakem.enCokTasliHamle(hamleler, Sabitler.MEVCUT_OYUNCU);
+                //Hamle enGuzelHamle=hakem.guzelHamleOyna(hamleler, Sabitler.MEVCUT_OYUNCU);
                 
                // Random       random         = new Random();
                // int          randomInt      = random.nextInt(availableMoves.size());
                 String       nextMove       = new TabloHareketImpl().
-                		kordinatCevir(enGuzelHamle.getOynanacakTas().getXkordinat(),
-                		enGuzelHamle.getOynanacakTas().getYkordinat());
+                		kordinatCevir(enIyiHamle.getOynanacakTas().getXkordinat(),
+                		enIyiHamle.getOynanacakTas().getYkordinat());
 
                 client.move(authCode, nextMove);
             }
