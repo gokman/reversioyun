@@ -18,9 +18,11 @@ public Hamle enIyiHamleSec(List<Hamle> hamleler){
 }
 
 public Hamle enCokTasliHamle(List<Hamle> hamleler,int renk){
-	int deger=0;
-	Hamle hamle=null;
-	List<Hamle> koseHamle=new ArrayList<Hamle>();
+	int deger=0,tempYakinlik=100;
+	List<Hamle> cokTasliHamleler=new ArrayList<Hamle>();
+	Hamle cokTasliHamle=null;
+	Hamle oynanacakHamle=null;
+	/*List<Hamle> koseHamle=new ArrayList<Hamle>();
 	for(int i=0;i<hamleler.size();i++){
 		if(hamleler.get(i).getOynanacakTas().getXkordinat()==0||
 				hamleler.get(i).getOynanacakTas().getXkordinat()==7||
@@ -45,23 +47,40 @@ public Hamle enCokTasliHamle(List<Hamle> hamleler,int renk){
 			}
 			
 		}	
-	}else{
+	}else{*/
 	for(int i=0;i<hamleler.size();i++){
 		if(renk==Sabitler.BEYAZ_OYUNCU){
 			if(deger<hamleler.get(i).getOynanacakDurum().getBeyazMiktar()){
+			//çok taş yiyeceğimiz hamleyi aldık	
 			deger=hamleler.get(i).getOynanacakDurum().getBeyazMiktar();
-			hamle=hamleler.get(i);
+			cokTasliHamle=hamleler.get(i);
+			//yine aynı miktarda taş yiyen eleman geldi ve listemize alıyoruz
+			}else if(deger==hamleler.get(i).getOynanacakDurum().getBeyazMiktar()){
+				cokTasliHamleler.add(hamleler.get(i));
 			}
 		}else if(renk==Sabitler.SIYAH_OYUNCU){
 			if(deger<hamleler.get(i).getOynanacakDurum().getSiyahMiktar()){
 			deger=hamleler.get(i).getOynanacakDurum().getSiyahMiktar();
-			hamle=hamleler.get(i);
+			cokTasliHamle=hamleler.get(i);
+			}else if(deger==hamleler.get(i).getOynanacakDurum().getSiyahMiktar()){
+				cokTasliHamleler.add(hamleler.get(i));
 			}
 		}
 		
 	}
-	}
-	return hamle;
+	//şimdi elimizde ya en çok sayılı tek hamle var ya da aynı çok sayılı hamleler var
+	if(cokTasliHamleler.size()>0){
+		//kenara en yakın olanı çek
+		for(int i=0;i<cokTasliHamleler.size();i++){
+			if(tempYakinlik>cokTasliHamleler.get(i).getOynanacakTas().getYakinlik()){
+				tempYakinlik=cokTasliHamleler.get(i).getOynanacakTas().getYakinlik();
+				oynanacakHamle=cokTasliHamleler.get(i);
+			}
+		}
+	}else
+		oynanacakHamle=cokTasliHamle;
+	//}
+	return oynanacakHamle;
 }
 
 public Hamle guzelHamleOyna(List<Hamle> hamleler,int renk){
