@@ -5,16 +5,42 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import paket.service.TabloHareketImpl;
+import paket.util.Sabitler;
+
 public class Hamle {
 	
-       Tahta oynanmisDurum;
-       Tahta oynanacakDurum;
-       Tas oynanacakTas;
+       public Tahta oynanacakDurum;
+       public List<Hamle> getKarsiHamleler() {
+		return karsiHamleler;
+	}
+
+
+	public void setKarsiHamleler(List<Hamle> karsiHamleler) {
+		this.karsiHamleler = karsiHamleler;
+	}
+
+	public Tas oynanacakTas;
+       public List<Hamle> karsiHamleler;
        
-       public Hamle(Tas oynanacakTas,Tahta oynanacakDurum){
+       
+	   public Tas getOynanacakTas() {
+		return oynanacakTas;
+	}
+
+
+	public void setOynanacakTas(Tas oynanacakTas) {
+		this.oynanacakTas = oynanacakTas;
+	}
+
+       
+       public Hamle(Tas oyna,Tahta durum){
     	   
-    	   this.oynanacakTas=oynanacakTas;
-    	   this.oynanacakDurum=oynanacakDurum;
+    	   this.oynanacakTas=oyna;
+    	   this.oynanacakDurum=durum;
+    	  // this.oynanmisDurum=oynanacakDurum;
+    	   this.oynanacakDurum.setElement(oynanacakTas.getXkordinat(),oynanacakTas.getYkordinat(), oynanacakTas.getRenk());
+    	   oyna();
     	   
        }
        
@@ -24,7 +50,6 @@ public class Hamle {
     	   hatUzerindeOyna(sagCaprazHatGetir());
     	   hatUzerindeOyna(dikeyHatGetir());
     	   hatUzerindeOyna(yatayHatGetir());
-    	   oynanmisDurum=oynanacakDurum;
        }
        
       public void hatUzerindeOyna(List<Tas> hat){
@@ -32,7 +57,7 @@ public class Hamle {
     	  /*hat üzerindeki diğer renk grubunu içine alan ilk ve son taşın yerini tutar
     	    örnek: X X 0 0 0 X X X
     	    geziciİlk 1, geziciSon da 5. eleman oluyor */ 
-          Map<String,Integer> geziciİlk=new HashMap<String,Integer>(),geziciSon=new HashMap<>();
+          Map<String,Integer> geziciİlk=new HashMap<String,Integer>(),geziciSon=new HashMap<String,Integer>();
     	  //oynanacak taşı oynadık
     	 // oynanacakDurum.setElement(oynanacakTas.getXkordinat(), oynanacakTas.getYkordinat(), oynanacakTas.getRenk());
     	  
@@ -58,23 +83,44 @@ public class Hamle {
   				 geziciSon.put(Sabitler.KORDINAT, j);
   			 }
   		  }
+  		  //gezici son mevcut ise demek ki iki taşımız arasına rakip taşları koyduk
+  		  if(geziciSon.size()>0){
     	  //şimdi elimizdeki hattı güncelleyeceğiz.
     	  for(int i=geziciİlk.get(Sabitler.KORDINAT)+1;i<geziciSon.get(Sabitler.KORDINAT);i++){
-    		  oynanacakDurum.setElement(hat.get(i).getXkordinat(), hat.get(i).getYkordinat(), Sabitler.MEVCUT_OYUNCU);
+    		  this.oynanacakDurum.setElement(hat.get(i).getXkordinat(), hat.get(i).getYkordinat(), Sabitler.MEVCUT_OYUNCU);
     	  }
+    	  	  
+  		  }
       }
      
       
-      public List<Tas> solCaprazHatGetir(){
+      public Tahta getOynanacakDurum() {
+		return oynanacakDurum;
+	}
+
+
+	public void setOynanacakDurum(Tahta oynanacakDurum) {
+		this.oynanacakDurum = oynanacakDurum;
+	}
+
+
+	public List<Tas> solCaprazHatGetir(){
     	  List<Tas> solCaprazHat=new ArrayList<Tas>();
-    	  int geziciX=-1,geziciY=-1;
+    	  int geziciX=oynanacakTas.getXkordinat(),geziciY=oynanacakTas.getYkordinat();
+    	  int temp=0;
     	//başlangıç noktasını belirliyoruz
-    	  while (geziciX!=-1||geziciY!=-1){
+    	  while (geziciX>0&&geziciY>0){
+    		  if (temp==0){
     		  geziciX=oynanacakTas.getXkordinat()-1;
     		  geziciY=oynanacakTas.getYkordinat()-1;
+    		  }else{
+    			  geziciX=geziciX-1;
+        		  geziciY=geziciY-1;
+    		  }
+    		  temp=temp+1;
     	  }
     	  //baştan sol çapraza doğru çıkıyoruz
-    	  while(geziciX!=8||geziciY!=8){
+    	  while(geziciX<8&&geziciY<8){
     		  solCaprazHat.add(new Tas(geziciX,geziciY,oynanacakDurum.getElement(geziciX, geziciY).getRenk()));
     		  geziciX=geziciX+1;
     		  geziciY=geziciY+1;
@@ -83,14 +129,21 @@ public class Hamle {
       }
       public List<Tas> sagCaprazHatGetir(){
     	  List<Tas> sagCaprazHat=new ArrayList<Tas>();
-    	  int geziciX=-1,geziciY=-1;
+    	  int geziciX=oynanacakTas.getXkordinat(),geziciY=oynanacakTas.getYkordinat();
+    	  int temp=0;
     	  //başlangıç noktasını belirliyoruz
-    	  while (geziciX!=-1||geziciY!=8){
-    		  geziciX=oynanacakTas.getXkordinat()-1;
-    		  geziciY=oynanacakTas.getYkordinat()+1;
+    	  while (geziciX>0&&geziciY<7){
+    		  if(temp==0){
+    		      geziciX=geziciX-1;
+    		      geziciY=geziciY+1;
+    		  }else{
+    			  geziciX=geziciX-1;
+        		  geziciY=geziciY+1;
+    		  }
+    		  temp=temp+1;
     	  }
     	  //baştan sağ çapraza doğru çıkıyoruz
-    	  while(geziciX!=8||geziciY!=-1){
+    	  while(geziciX<8&&geziciY>-1){
     		  sagCaprazHat.add(new Tas(geziciX,geziciY,oynanacakDurum.getElement(geziciX, geziciY).getRenk()));
     		  geziciX=geziciX+1;
     		  geziciY=geziciY-1;
@@ -100,13 +153,18 @@ public class Hamle {
       //yukarıdan aşağı doğru
       public List<Tas> dikeyHatGetir(){
     	  List<Tas> dikeyHat=new ArrayList<Tas>();
-    	  int geziciX=-1,geziciY=-1;
-    	  while (geziciY!=-1){
-    		  geziciX=oynanacakTas.getXkordinat();
-    		  geziciY=oynanacakTas.getYkordinat()-1;
+    	  int geziciX=oynanacakTas.getXkordinat(),geziciY=oynanacakTas.getYkordinat();
+    	  int temp=0;
+    	  while (geziciY>0){
+    		  if(temp==0){
+    		  geziciY=geziciY-1;
+    		  }else{
+    			  geziciY=geziciY-1;
+    		  }
+    		  temp=temp+1;
     	  }
     	//baştan aşağı doğru çıkıyoruz
-    	  while(geziciY!=8){
+    	  while(geziciY<8){
     		  dikeyHat.add(new Tas(geziciX,geziciY,oynanacakDurum.getElement(geziciX, geziciY).getRenk()));
     		  geziciY=geziciY+1;
     	  }
@@ -115,17 +173,33 @@ public class Hamle {
     //soldan sağa doğru
       public List<Tas> yatayHatGetir(){
     	  List<Tas> yatayHat=new ArrayList<Tas>();
-    	  int geziciX=-1,geziciY=-1;
-    	  while (geziciX!=-1){
-    		  geziciX=oynanacakTas.getXkordinat()-1;
-    		  geziciY=oynanacakTas.getYkordinat();
+    	  int geziciX=oynanacakTas.getXkordinat(),geziciY=oynanacakTas.getYkordinat();
+    	  int temp=0;
+    	  while (geziciX>0){
+    		  if(temp==0){
+    		  geziciX=geziciX-1;
+    		  }else{
+    			  geziciX=geziciX-1;
+        		  
+    		  }
+    		  temp=temp+1;
     	  }
     	//soldan sağa doğru çıkıyoruz
-    	  while(geziciX!=8){
+    	  while(geziciX<8){
     		  yatayHat.add(new Tas(geziciX,geziciY,oynanacakDurum.getElement(geziciX, geziciY).getRenk()));
     		  geziciX=geziciX+1;
     	  }
     	  return yatayHat;
+      }
+      
+      public void karsiHamleleriHesapla(){
+    	  TabloHareketImpl hareketler=new TabloHareketImpl();
+    	  List<Tas> oynanacakTaslar=new ArrayList<Tas>();
+    	  oynanacakTaslar=hareketler.oynanacakTaslar(oynanacakDurum, Sabitler.RAKIP_OYUNCU);
+    	  for(int i=0;i<oynanacakTaslar.size();i++){
+          	karsiHamleler.add(i, new Hamle(oynanacakTaslar.get(i),oynanacakDurum));
+          }
+    	 
       }
       
 }
