@@ -1,5 +1,6 @@
 package paket.hukumveren;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import paket.object.Hamle;
@@ -19,6 +20,32 @@ public Hamle enIyiHamleSec(List<Hamle> hamleler){
 public Hamle enCokTasliHamle(List<Hamle> hamleler,int renk){
 	int deger=0;
 	Hamle hamle=null;
+	List<Hamle> koseHamle=new ArrayList<Hamle>();
+	for(int i=0;i<hamleler.size();i++){
+		if(hamleler.get(i).getOynanacakTas().getXkordinat()==0||
+				hamleler.get(i).getOynanacakTas().getXkordinat()==7||
+				hamleler.get(i).getOynanacakTas().getYkordinat()==0||
+				hamleler.get(i).getOynanacakTas().getYkordinat()==7){
+			koseHamle.add(hamleler.get(i));
+		}
+	}
+	//eğer köşe elemanı var ise onlar arasında dön yok ise ne kadar hamle var ise onlar içinde en çok puan getireni getir
+	if(koseHamle.size()>0){
+		for(int i=0;i<koseHamle.size();i++){
+			if(renk==Sabitler.BEYAZ_OYUNCU){
+				if(deger<koseHamle.get(i).getOynanacakDurum().getBeyazMiktar()){
+				deger=koseHamle.get(i).getOynanacakDurum().getBeyazMiktar();
+				hamle=koseHamle.get(i);
+				}
+			}else if(renk==Sabitler.SIYAH_OYUNCU){
+				if(deger<koseHamle.get(i).getOynanacakDurum().getSiyahMiktar()){
+				deger=koseHamle.get(i).getOynanacakDurum().getSiyahMiktar();
+				hamle=koseHamle.get(i);
+				}
+			}
+			
+		}	
+	}else{
 	for(int i=0;i<hamleler.size();i++){
 		if(renk==Sabitler.BEYAZ_OYUNCU){
 			if(deger<hamleler.get(i).getOynanacakDurum().getBeyazMiktar()){
@@ -32,6 +59,7 @@ public Hamle enCokTasliHamle(List<Hamle> hamleler,int renk){
 			}
 		}
 		
+	}
 	}
 	return hamle;
 }
