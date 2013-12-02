@@ -33,4 +33,31 @@ public class Tas {
 		public void setRenk(int renk) {
 			this.renk = renk;
 		}
+		
+		public int getYakinlik(){
+			int yakinlikMiktar=0;
+	        //tahtayı dört bölgeye ayırıyoruz
+			if(this.xkordinat<4&&this.ykordinat<4){
+				if(this.xkordinat<this.ykordinat)
+					yakinlikMiktar=this.xkordinat;
+				else
+					yakinlikMiktar=this.ykordinat;
+			}else if(this.xkordinat>4&&this.ykordinat<4){
+				if(7-this.xkordinat<this.ykordinat)
+					yakinlikMiktar=7-this.xkordinat;
+				else
+					yakinlikMiktar=this.ykordinat;
+			}else if(this.xkordinat>4&&this.ykordinat>4){
+				if(7-this.xkordinat<7-this.ykordinat)
+					yakinlikMiktar=7-this.xkordinat;
+				else
+					yakinlikMiktar=7-this.ykordinat;
+			}else if(this.xkordinat<4&&this.ykordinat>4){
+				if(this.xkordinat<7-this.ykordinat)
+					yakinlikMiktar=this.xkordinat;
+				else
+					yakinlikMiktar=7-this.ykordinat;
+			}
+			return yakinlikMiktar;
+		}
 }

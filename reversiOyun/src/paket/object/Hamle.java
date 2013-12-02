@@ -63,7 +63,9 @@ public class Hamle {
     	  
   		for(int j=0;j<hat.size();j++){
   			 if(hat.get(j).getRenk()==Sabitler.BOS){
-  				 
+  				 if(geziciİlk.size()>0&&geziciSon.size()==0){
+  					 geziciİlk.clear();
+  				 }
   			 }else if(hat.get(j).getRenk()!=Sabitler.BOS&&geziciİlk.size()==0){
   				 geziciİlk.put(Sabitler.RENK, hat.get(j).getRenk());
   				 geziciİlk.put(Sabitler.KORDINAT, j);

@@ -58,42 +58,42 @@ public class TabloHareketImpl implements TahtaHareket{
 				
 				if(tahta.getElement(x, y).getRenk()==Sabitler.BOS){
 					//yukarı bak
-					if(y>0&&
+					if(y>1&&
 							tahta.getElement(x, y-1).getRenk()!=renk&&tahta.getElement(x, y-1).getRenk()!=Sabitler.BOS){
 						if(kontrol(x,y-2,Sabitler.YON_YUKARI,tahta,renk)==true){
 							oynanacakTaslar.add(new Tas(x,y,renk));
 						}
 					}
 					//sağ yukarı çapraz
-					else if(x<7 && y>0 &&
+					else if(x<6 && y>1 &&
 							tahta.getElement(x+1, y-1).getRenk()!=renk&&tahta.getElement(x+1, y-1).getRenk()!=Sabitler.BOS){
 						if(kontrol(x+2,y-2,Sabitler.YON_SAG_UST_CAPRAZ,tahta,renk)==true){
 							oynanacakTaslar.add(new Tas(x,y,renk));
 						}
 					}
 					//sağ 
-					else if(x<7&&
+					else if(x<6&&
 							tahta.getElement(x+1, y).getRenk()!=renk && tahta.getElement(x+1, y).getRenk()!=Sabitler.BOS){
 						if(kontrol(x+2,y,Sabitler.YON_SAG,tahta,renk)==true){
 							oynanacakTaslar.add(new Tas(x,y,renk));
 						}
 					}
 					//sağ alt çapraz
-					else if(x<7&&y<7&&
+					else if(x<6&&y<6&&
 							tahta.getElement(x+1, y+1).getRenk()!=renk && tahta.getElement(x+1, y+1).getRenk()!=Sabitler.BOS){
 						if(kontrol(x+2,y+2,Sabitler.YON_SAG_ALT_CAPRAZ,tahta,renk)==true){
 							oynanacakTaslar.add(new Tas(x,y,renk));
 						}
 					}
 					//aşağı
-					else if(y<7&&
+					else if(y<6&&
 							tahta.getElement(x, y+1).getRenk()!=renk && tahta.getElement(x, y+1).getRenk()!=Sabitler.BOS){
 						if(kontrol(x,y+2,Sabitler.YON_ASAGI,tahta,renk)==true){
 							oynanacakTaslar.add(new Tas(x,y,renk));
 						}
 					}
 					//sol alt çapraz
-					else if(x>0&&y<7&&
+					else if(x>1&&y<6&&
 							tahta.getElement(x-1, y+1).getRenk()!=renk && tahta.getElement(x-1, y+1).getRenk()!=Sabitler.BOS){
 						if(kontrol(x-2,y+2,Sabitler.YON_SOL_ALT_CAPRAZ,tahta,renk)==true){
 							oynanacakTaslar.add(new Tas(x,y,renk));
