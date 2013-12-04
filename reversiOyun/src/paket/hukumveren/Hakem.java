@@ -85,15 +85,26 @@ public Hamle enCokTasliHamle(List<Hamle> hamleler,int renk){
 
 public Hamle guzelHamleOyna(List<Hamle> hamleler,int renk){
 	Hamle karsihamle=null;
-	int puan=0,temp=0,kacinciEleman=0;
+	List<Hamle> enIyiHamleler=new ArrayList<Hamle>();
+	int puan=0,temp=0,kacinciEleman=0,karsiHamlePuan=0;
 	for(int i=0;i<hamleler.size();i++){
 		hamleler.get(i).karsiHamleleriHesapla();
+		//karşı hamle yok ise es geç
+		if(hamleler.get(i).getKarsiHamleler().size()>0){
 		karsihamle=enCokTasliHamle(hamleler.get(i).getKarsiHamleler(),Sabitler.RAKIP_OYUNCU);
+			if(Sabitler.MEVCUT_OYUNCU==Sabitler.SIYAH){
+				karsiHamlePuan=karsihamle.getOynanacakDurum().getBeyazMiktar();
+			}else{
+				karsiHamlePuan=karsihamle.getOynanacakDurum().getSiyahMiktar();
+			}
+		}else{
+			karsiHamlePuan=0;
+		}
 		if(Sabitler.MEVCUT_OYUNCU==Sabitler.SIYAH){
 			//elimizdeki hamle puanı ile karşı hamlenin en yüksek puanı arasındaki fark
-		    puan=hamleler.get(i).getOynanacakDurum().getSiyahMiktar()-karsihamle.getOynanacakDurum().getBeyazMiktar();
+		    puan=hamleler.get(i).getOynanacakDurum().getSiyahMiktar()-karsiHamlePuan;
 		}else{
-			puan=hamleler.get(i).getOynanacakDurum().getBeyazMiktar()-karsihamle.getOynanacakDurum().getSiyahMiktar();
+			puan=hamleler.get(i).getOynanacakDurum().getBeyazMiktar()-karsiHamlePuan;
 		}
 		if(temp<puan){
 			temp=puan;
