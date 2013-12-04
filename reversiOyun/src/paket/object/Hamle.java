@@ -195,6 +195,7 @@ public class Hamle {
       }
       
       public void karsiHamleleriHesapla(){
+    	  karsiHamleler=new ArrayList<Hamle>();
     	  TabloHareketImpl hareketler=new TabloHareketImpl();
     	  List<Tas> oynanacakTaslar=new ArrayList<Tas>();
     	  oynanacakTaslar=hareketler.oynanacakTaslar(oynanacakDurum, Sabitler.RAKIP_OYUNCU);
