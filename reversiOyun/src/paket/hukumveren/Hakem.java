@@ -1,7 +1,10 @@
 package paket.hukumveren;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import paket.object.Hamle;
 import paket.util.Sabitler;
@@ -22,7 +25,7 @@ public Hamle enCokTasliHamle(List<Hamle> hamleler,int renk){
 	List<Hamle> cokTasliHamleler=new ArrayList<Hamle>();
 	Hamle cokTasliHamle=null;
 	Hamle oynanacakHamle=null;
-	/*List<Hamle> koseHamle=new ArrayList<Hamle>();
+	List<Hamle> koseHamle=new ArrayList<Hamle>();
 	for(int i=0;i<hamleler.size();i++){
 		if(hamleler.get(i).getOynanacakTas().getXkordinat()==0||
 				hamleler.get(i).getOynanacakTas().getXkordinat()==7||
@@ -37,17 +40,17 @@ public Hamle enCokTasliHamle(List<Hamle> hamleler,int renk){
 			if(renk==Sabitler.BEYAZ_OYUNCU){
 				if(deger<koseHamle.get(i).getOynanacakDurum().getBeyazMiktar()){
 				deger=koseHamle.get(i).getOynanacakDurum().getBeyazMiktar();
-				hamle=koseHamle.get(i);
+				oynanacakHamle=koseHamle.get(i);
 				}
 			}else if(renk==Sabitler.SIYAH_OYUNCU){
 				if(deger<koseHamle.get(i).getOynanacakDurum().getSiyahMiktar()){
 				deger=koseHamle.get(i).getOynanacakDurum().getSiyahMiktar();
-				hamle=koseHamle.get(i);
+				oynanacakHamle=koseHamle.get(i);
 				}
 			}
 			
 		}	
-	}else{*/
+	}else{
 	for(int i=0;i<hamleler.size();i++){
 		if(renk==Sabitler.BEYAZ_OYUNCU){
 			if(deger<hamleler.get(i).getOynanacakDurum().getBeyazMiktar()){
@@ -79,19 +82,69 @@ public Hamle enCokTasliHamle(List<Hamle> hamleler,int renk){
 		}
 	}else
 		oynanacakHamle=cokTasliHamle;
-	//}
+	}
 	return oynanacakHamle;
 }
 
 public Hamle guzelHamleOyna(List<Hamle> hamleler,int renk){
 	Hamle karsihamle=null;
-	List<Hamle> enIyiHamleler=new ArrayList<Hamle>();
+	//en avantajlı hamleyi bulmak için kullanılacak dizi
+	Map<Integer,Integer> mapim=new HashMap<Integer,Integer>();
 	int puan=0,temp=0,kacinciEleman=0,karsiHamlePuan=0;
+	
+	//başla
+	List<Hamle> koseHamle=new ArrayList<Hamle>();
+	for(int i=0;i<hamleler.size();i++){
+		if(hamleler.get(i).getOynanacakTas().getXkordinat()==0||
+				hamleler.get(i).getOynanacakTas().getXkordinat()==7||
+				hamleler.get(i).getOynanacakTas().getYkordinat()==0||
+				hamleler.get(i).getOynanacakTas().getYkordinat()==7){
+			koseHamle.add(hamleler.get(i));
+		}
+	}
+	
+	//eğer köşe elemanı var ise onlar arasında dön yok ise ne kadar hamle var ise onlar içinde en çok puan getireni getir
+	if(koseHamle.size()>0){
+		
+		for(int i=0;i<koseHamle.size();i++){
+			koseHamle.get(i).karsiHamleleriHesapla();
+			//karşı hamle yok ise es geç
+			if(koseHamle.get(i).getKarsiHamleler().size()>0){
+			karsihamle=enCokTasliHamle(koseHamle.get(i).getKarsiHamleler(),Sabitler.RAKIP_OYUNCU);
+				if(Sabitler.MEVCUT_OYUNCU==Sabitler.SIYAH){
+					karsiHamlePuan=karsihamle.getOynanacakDurum().getBeyazMiktar();
+				}else{
+					karsiHamlePuan=karsihamle.getOynanacakDurum().getSiyahMiktar();
+				}
+			}else{
+				karsiHamlePuan=0;
+			}
+			if(Sabitler.MEVCUT_OYUNCU==Sabitler.SIYAH){
+				//elimizdeki hamle puanı ile karşı hamlenin en yüksek puanı arasındaki fark
+			    puan=koseHamle.get(i).getOynanacakDurum().getSiyahMiktar()-karsiHamlePuan;
+			    mapim.put(i, Integer.parseInt(karsiHamlePuan+""+koseHamle.get(i).getOynanacakDurum().getSiyahMiktar()));
+			}else{
+				puan=koseHamle.get(i).getOynanacakDurum().getBeyazMiktar()-karsiHamlePuan;
+				mapim.put(i, Integer.parseInt(karsiHamlePuan+""+koseHamle.get(i).getOynanacakDurum().getBeyazMiktar()));
+			}
+			/*if(temp<puan){
+				temp=puan;
+				//kacıncı elemanın en karlı olduğunu bilmemiz gerekiyor
+				kacinciEleman=i;
+			}*/
+		}	
+				
+	}else{
+	
+	//bitir
+	
 	for(int i=0;i<hamleler.size();i++){
 		hamleler.get(i).karsiHamleleriHesapla();
 		//karşı hamle yok ise es geç
 		if(hamleler.get(i).getKarsiHamleler().size()>0){
+			
 		karsihamle=enCokTasliHamle(hamleler.get(i).getKarsiHamleler(),Sabitler.RAKIP_OYUNCU);
+		
 			if(Sabitler.MEVCUT_OYUNCU==Sabitler.SIYAH){
 				karsiHamlePuan=karsihamle.getOynanacakDurum().getBeyazMiktar();
 			}else{
@@ -103,16 +156,19 @@ public Hamle guzelHamleOyna(List<Hamle> hamleler,int renk){
 		if(Sabitler.MEVCUT_OYUNCU==Sabitler.SIYAH){
 			//elimizdeki hamle puanı ile karşı hamlenin en yüksek puanı arasındaki fark
 		    puan=hamleler.get(i).getOynanacakDurum().getSiyahMiktar()-karsiHamlePuan;
+		    mapim.put(i, Integer.parseInt(karsiHamlePuan+""+hamleler.get(i).getOynanacakDurum().getSiyahMiktar()));
 		}else{
 			puan=hamleler.get(i).getOynanacakDurum().getBeyazMiktar()-karsiHamlePuan;
+			mapim.put(i, Integer.parseInt(karsiHamlePuan+""+hamleler.get(i).getOynanacakDurum().getBeyazMiktar()));
 		}
-		if(temp<puan){
+		/*if(temp<puan){
 			temp=puan;
 			//kacıncı elemanın en karlı olduğunu bilmemiz gerekiyor
 			kacinciEleman=i;
-		}
+		}*/
 	}
-	return hamleler.get(kacinciEleman);
+	}
+	return hamleler.get(enYuksekHamle(mapim));
 }
 
 public Hamle enAzTasliHamle(List<Hamle> hamleler,int renk){
@@ -134,6 +190,18 @@ public Hamle enAzTasliHamle(List<Hamle> hamleler,int renk){
 	}
 	return hamle;
 }
+
+public int enYuksekHamle(Map<Integer,Integer> mapim){
+	Entry<Integer,Integer> maxEntry = null;
+
+	for(Entry<Integer,Integer> entry : mapim.entrySet()) {
+	    if (maxEntry == null || entry.getValue() > maxEntry.getValue()) {
+	        maxEntry = entry;
+	    }
+	}
+	return maxEntry.getKey();
+}
+
 
 
 }
