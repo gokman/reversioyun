@@ -44,8 +44,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        final String baseAddress = "http://localhost:8080/reversi-stadium/rest/";
-        final String authCode    = "eota5581";
+        final String baseAddress = "http://10.1.35.99:8080/reversi-stadium/rest/";
+        final String authCode    = "hgfj6804";
         final int    player      = Sabitler.SIYAH_OYUNCU;
         Sabitler.MEVCUT_OYUNCU=player;
         new Main(baseAddress, authCode, player);
@@ -103,14 +103,14 @@ public class Main {
                 }
                 //hamlelerden en iyi olanı seçeceğiz
                 Hakem hakem=new Hakem();
-                Hamle enIyiHamle=hakem.enCokTasliHamle(hamleler, Sabitler.MEVCUT_OYUNCU);
-                //Hamle enGuzelHamle=hakem.guzelHamleOyna(hamleler, Sabitler.MEVCUT_OYUNCU);
+               //Hamle enIyiHamle=hakem.enCokTasliHamle(hamleler, Sabitler.MEVCUT_OYUNCU);
+                Hamle enGuzelHamle=hakem.guzelHamleOyna(hamleler, Sabitler.MEVCUT_OYUNCU);
                 
                // Random       random         = new Random();
                // int          randomInt      = random.nextInt(availableMoves.size());
                 String       nextMove       = new TabloHareketImpl().
-                		kordinatCevir(enIyiHamle.getOynanacakTas().getXkordinat(),
-                		enIyiHamle.getOynanacakTas().getYkordinat());
+                		kordinatCevir(enGuzelHamle.getOynanacakTas().getXkordinat(),
+                		enGuzelHamle.getOynanacakTas().getYkordinat());
 
                 client.move(authCode, nextMove);
             }
